@@ -14,3 +14,10 @@ wheels/
 
 # Logging files
 log.txt
+
+# Scripts
+scripts/**
+
+
+# Data
+data/**

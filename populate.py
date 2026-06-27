@@ -1,6 +1,8 @@
 import service.database as db
 import service.embedding as embedding
 
+ACCEPTED_EXTENSIONS = [".txt", ".md", ".log"]
+
 
 def main():
     with open("data/rag_test.txt", "r") as f:
