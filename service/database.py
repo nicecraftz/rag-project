@@ -55,7 +55,7 @@ def query_near_chunks(embedding: list[float]) -> list[str]:
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(
-                "SELECT text FROM embeddings ORDER BY embedding <=> %s LIMIT 5",
+                "SELECT text FROM embeddings ORDER BY embedding <=> %s LIMIT 10",
                 (Vector(embedding),),
             )
             result = cursor.fetchall()

@@ -1,16 +1,29 @@
+import os
+
 import service.database as db
-import service.embedding as embedding
+from service.embedding.chunk import extract_chunks
+from service.embedding.embedder import embed_chunks
 
 ACCEPTED_EXTENSIONS = [".txt", ".md", ".log"]
+DATA_DIR = "data/workset"
 
 
 def main():
-    with open("data/rag_test.txt", "r") as f:
-        content = f.read()
-        content_embedding = embedding.calculate_embeddings(content)
+    for file in os.listdir(DATA_DIR):
+        ext = os.path.splitext(file)[1]
+        if ext not in ACCEPTED_EXTENSIONS:
+            continue
 
-    db.batch_insert_embeddings(content_embedding)
-    print(f"INFO: Populated db successfully with {len(content_embedding)} entries")
+        with open(DATA_DIR + "/" + file, "r", encoding="utf-8") as f:
+            print("Embedding: " + file)
+            content = f.read()
+            content_chunks = extract_chunks(content, delimiter="\n\n")
+
+            print(f"Total chunks: {len(content_chunks)}")
+            embeddings = embed_chunks(content_chunks)
+
+            db.batch_insert_embeddings(embeddings)
+            print(f"Inserted {len(embeddings)} embeddings for {file}")
 
 
 if __name__ == "__main__":
