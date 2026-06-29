@@ -29,7 +29,9 @@ def embed_chunks(
         batch = chunks[i : i + MAX_CHUNK_QUANTITY]
         response = ollama.embed(model=EMBEDDING_MODEL, input=batch)
         completed += len(batch)
-        print(f"Embedding progress: {completed}/{total} ({completed / total * 100:.1f}%)")
+        print(
+            f"Embedding progress: {completed}/{total} ({completed / total * 100:.1f}%)"
+        )
         for j, vector in enumerate(response.embeddings):
             vector_data.append({"content": batch[j], "embedding": vector})
 
